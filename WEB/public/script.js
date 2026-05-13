@@ -1171,6 +1171,8 @@ function initializeAdminUser() {
 }
 
 onReady(() => {
+    loadSavedProducts();
+    loadSavedProductImages();
     initializeAdminUser();
     renderProducts(products);
     updateCart();
@@ -2155,17 +2157,29 @@ async function handleAddProduct() {
     saveCustomProducts();
     saveProductImages();
 
-    renderProducts(currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter));
+    // Render products with current filter
+    const filteredProducts = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+    renderProducts(filteredProducts);
+    
+    // Scroll to the new product if it's visible
+    setTimeout(() => {
+        const newProductCard = document.querySelector(`[data-category="${newProduct.category}"]:last-child`);
+        if (newProductCard) {
+            newProductCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Add highlight effect
+            newProductCard.style.boxShadow = '0 0 20px rgba(255, 193, 7, 0.8)';
+            setTimeout(() => {
+                newProductCard.style.boxShadow = '';
+            }, 2000);
+        }
+    }, 100);
+    
     loadAdminProducts();
     if (currentUser) showRecommendations();
 
     showNotification('Đã thêm sản phẩm mới và lưu ảnh vào thư mục uploads!', 'success');
     closeAddProductModal();
 }
-
-// Load saved product data and images when page starts
-loadSavedProducts();
-loadSavedProductImages();
 
 // ==================== STOCK MANAGEMENT ====================
 
