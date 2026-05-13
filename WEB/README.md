@@ -1,6 +1,8 @@
 # KitchenPro - Dụng Cụ Làm Bếp Cao Cấp
 Demo storefront E-commerce chuyên dụng cho thương hiệu **KitchenPro** (dụng cụ nhà bếp cao cấp), được vận hành trên nền tảng **Next.js App Router**.
 
+---
+
 ## 🌟 Tính năng chính
 Trang chủ hiện đại: Giao diện tập trung vào trải nghiệm mua sắm đồ gia dụng với khu vực Hero chuyên nghiệp.
 
@@ -16,6 +18,8 @@ Xác thực người dùng: Modal đăng nhập/đăng ký tích hợp sẵn cho
 
 Quản trị viên (Admin Panel): Giao diện quản lý đơn hàng dành riêng cho chủ cửa hàng.
 
+---
+
 ## 🛠 Công nghệ sử dụng
 Framework: Next.js 14 (App Router)
 
@@ -27,12 +31,16 @@ Icons & Fonts: FontAwesome 6.0, Google Fonts (Poppins & Playfair Display)
 
 Logic: JavaScript (Vanilla JS) tích hợp qua cơ chế **dangerouslySetInnerHTML** và **next/script** để tối ưu tốc độ tải trang.
 
+---
+
 ## 📂 Cấu trúc thư mục
 `/app`: Chứa các Route chính của ứng dụng (layout, page, head).
 
 `/public`: Chứa các file tĩnh như script.js và hình ảnh.
 
 `/styles.css`: Hệ thống màu sắc và layout toàn cục của KitchenPro.
+
+---
 
 ## 🚀 Bắt đầu
 
@@ -46,6 +54,8 @@ npm run dev
 
 Mở `http://localhost:3000`.
 
+---
+
 ## Scripts
 ```bash
 npm run dev     # chạy dev server
@@ -53,6 +63,7 @@ npm run build   # build production
 npm run start   # chạy production server
 npm run lint    # lint
 ```
+---
 
 ## Ghi chú
 **Hybrid Architecture**: Dự án đang sử dụng cấu trúc lai giữa Next.js và HTML thuần để giữ nguyên các hiệu ứng JavaScript gốc từ file script.js.
