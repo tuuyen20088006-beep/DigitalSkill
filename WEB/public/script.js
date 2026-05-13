@@ -51,6 +51,8 @@ const products = [
 
 let cart = [];
 let currentFilter = 'all';
+const ADMIN_EMAIL = 'admin@gmail.com';
+const ADMIN_PASSWORD = '121212';
 
 
 // Format price to VND
@@ -548,14 +550,75 @@ document.head.appendChild(style);
 // ==================== AUTH SYSTEM ====================
 let currentUser = null;
 
+function normalizeEmail(email) {
+    return (email || '').trim().toLowerCase();
+}
+
+function dedupeUsers(users) {
+    const unique = {};
+    return users.reduce((acc, user) => {
+        const email = normalizeEmail(user.email);
+        if (!email) return acc;
+
+        if (unique[email]) {
+            const existing = unique[email];
+            unique[email] = {
+                ...existing,
+                ...existing,
+                ...user,
+                email,
+                isAdmin: existing.isAdmin || user.isAdmin,
+                provider: existing.provider || user.provider,
+                avatar: existing.avatar || user.avatar,
+                password: existing.password || user.password
+            };
+            return acc;
+        }
+
+        unique[email] = { ...user, email };
+        acc.push(unique[email]);
+        return acc;
+    }, []);
+}
+
+function getUsers() {
+    return dedupeUsers(JSON.parse(localStorage.getItem('kitchenpro_users') || '[]'));
+}
+
+function saveUsers(users) {
+    localStorage.setItem('kitchenpro_users', JSON.stringify(dedupeUsers(users)));
+}
+
 // Check if user is logged in on page load
 function checkAuth() {
     let savedUser = localStorage.getItem('kitchenpro_user');
+    let storageType = 'local';
     if (!savedUser) {
         savedUser = sessionStorage.getItem('kitchenpro_user');
+        storageType = 'session';
     }
     if (savedUser) {
         currentUser = JSON.parse(savedUser);
+        currentUser.email = normalizeEmail(currentUser.email);
+        if (currentUser.email === ADMIN_EMAIL) {
+            currentUser.isAdmin = true;
+        }
+
+        const users = getUsers();
+        const storedUser = users.find(u => u.email === currentUser.email);
+        if (storedUser) {
+            currentUser = {
+                ...storedUser,
+                ...currentUser,
+                isAdmin: currentUser.email === ADMIN_EMAIL || storedUser.isAdmin === true
+            };
+            if (storageType === 'local') {
+                localStorage.setItem('kitchenpro_user', JSON.stringify(currentUser));
+            } else {
+                sessionStorage.setItem('kitchenpro_user', JSON.stringify(currentUser));
+            }
+        }
+
         updateUserUI();
         showRecommendations();
     }
@@ -611,18 +674,40 @@ function handleLogin(e) {
     
     // Check if user exists in localStorage
     const users = JSON.parse(localStorage.getItem('kitchenpro_users') || '[]');
-    const user = users.find(u => u.email === email);
-    
-    if (!user) {
-        showNotification('Email không tồn tại! Vui lòng đăng ký.', 'error');
-        return;
+    let user = users.find(u => u.email === email);
+
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        if (!user) {
+            user = {
+                id: 'admin_' + Date.now(),
+                name: 'Administrator',
+                email: ADMIN_EMAIL,
+                phone: '',
+                password: ADMIN_PASSWORD,
+                preferences: [],
+                viewedProducts: [],
+                purchasedCategories: [],
+                createdAt: new Date().toISOString(),
+                isAdmin: true
+            };
+            users.push(user);
+        } else {
+            user.password = ADMIN_PASSWORD;
+            user.isAdmin = true;
+        }
+        localStorage.setItem('kitchenpro_users', JSON.stringify(users));
+    } else {
+        if (!user) {
+            showNotification('Email không tồn tại! Vui lòng đăng ký.', 'error');
+            return;
+        }
+
+        if (user.password !== password) {
+            showNotification('Mật khẩu không đúng!', 'error');
+            return;
+        }
     }
-    
-    if (user.password !== password) {
-        showNotification('Mật khẩu không đúng!', 'error');
-        return;
-    }
-    
+
     // Login successful
     currentUser = user;
     if (remember) {
@@ -665,8 +750,12 @@ function handleRegister(e) {
         return;
     }
     
-    // Check if email exists
-    const users = JSON.parse(localStorage.getItem('kitchenpro_users') || '[]');
+    // Prevent registering the admin email and check if email exists
+    const users = getUsers();
+    if (email === ADMIN_EMAIL) {
+        showNotification('Email này đã được bảo vệ và không thể đăng ký!', 'error');
+        return;
+    }
     if (users.find(u => u.email === email)) {
         showNotification('Email đã được sử dụng!', 'error');
         return;
@@ -686,7 +775,7 @@ function handleRegister(e) {
     };
     
     users.push(newUser);
-    localStorage.setItem('kitchenpro_users', JSON.stringify(users));
+    saveUsers(users);
     
     // Auto login
     currentUser = newUser;
@@ -703,7 +792,7 @@ function handleRegister(e) {
 function handleForgotPassword(e) {
     e.preventDefault();
     
-    const email = document.getElementById('forgot-email').value;
+    const email = normalizeEmail(document.getElementById('forgot-email').value);
     const password = document.getElementById('forgot-password').value;
     const confirm = document.getElementById('forgot-confirm').value;
     
@@ -718,6 +807,11 @@ function handleForgotPassword(e) {
         return;
     }
     
+    if (email === ADMIN_EMAIL) {
+        showNotification('Không thể đặt lại mật khẩu admin tại đây. Vui lòng sử dụng thông tin admin chính chủ.', 'error');
+        return;
+    }
+
     // Get users from localStorage
     const users = JSON.parse(localStorage.getItem('kitchenpro_users') || '[]');
     const user = users.find(u => u.email === email);
@@ -820,7 +914,8 @@ function loginWithFacebook() {
 
 // Complete social login
 function completeSocialLogin(socialUser) {
-    const users = JSON.parse(localStorage.getItem('kitchenpro_users') || '[]');
+    socialUser.email = normalizeEmail(socialUser.email);
+    const users = getUsers();
     
     // Check if user with this email already exists
     let existingUser = users.find(u => u.email === socialUser.email);
@@ -829,12 +924,12 @@ function completeSocialLogin(socialUser) {
         // Update existing user with social info
         existingUser.provider = socialUser.provider;
         existingUser.avatar = socialUser.avatar;
-        localStorage.setItem('kitchenpro_users', JSON.stringify(users));
+        saveUsers(users);
         currentUser = existingUser;
     } else {
         // Create new user
         users.push(socialUser);
-        localStorage.setItem('kitchenpro_users', JSON.stringify(users));
+        saveUsers(users);
         currentUser = socialUser;
     }
     
@@ -1049,7 +1144,7 @@ addToCart = function(productId) {
 // Initialize on page load
 // Initialize admin user
 function initializeAdminUser() {
-    const users = JSON.parse(localStorage.getItem('kitchenpro_users') || '[]');
+    const users = getUsers();
     const adminExists = users.find(u => u.email === ADMIN_EMAIL);
     
     if (!adminExists) {
@@ -1066,12 +1161,12 @@ function initializeAdminUser() {
             isAdmin: true
         };
         users.push(adminUser);
-        localStorage.setItem('kitchenpro_users', JSON.stringify(users));
+        saveUsers(users);
     } else {
         // Ensure existing admin account remains admin and password stays synced
         adminExists.password = ADMIN_PASSWORD;
         adminExists.isAdmin = true;
-        localStorage.setItem('kitchenpro_users', JSON.stringify(users));
+        saveUsers(users);
     }
 }
 
@@ -1224,12 +1319,9 @@ function getStatusText(status) {
 
 // ==================== ADMIN SYSTEM ====================
 
-const ADMIN_EMAIL = 'admin@gmail.com';
-const ADMIN_PASSWORD = '121212';
-
 // Check if user is admin
 function isAdmin() {
-    return currentUser && currentUser.isAdmin === true && currentUser.email === ADMIN_EMAIL;
+    return currentUser && currentUser.email === ADMIN_EMAIL;
 }
 
 // Open admin panel
