@@ -56,6 +56,23 @@ Mở `http://localhost:3000`.
 
 ---
 
+## Deploy GitHub Pages
+Website được cấu hình static export cho repository `2`.
+
+Link sau khi bật GitHub Pages và workflow chạy thành công:
+`https://vmtamct112.github.io/2/`
+
+Các bước chính:
+```bash
+cd WEB
+npm ci
+npm run build
+```
+
+Workflow deploy nằm tại `.github/workflows/deploy.yml` và build thư mục `WEB`, sau đó publish `WEB/out` lên GitHub Pages.
+
+---
+
 ## Scripts
 ```bash
 npm run dev     # chạy dev server

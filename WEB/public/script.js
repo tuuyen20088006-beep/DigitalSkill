@@ -2084,29 +2084,8 @@ function closeAddProductModal() {
 async function uploadProductImage(file) {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
-        reader.onload = async function() {
-            try {
-                const response = await fetch('/api/upload', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fileName: file.name,
-                        fileType: file.type,
-                        imageBase64: reader.result
-                    })
-                });
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    reject(new Error(errorText || 'Upload thất bại'));
-                    return;
-                }
-                const data = await response.json();
-                resolve(data.url);
-            } catch (error) {
-                reject(error);
-            }
+        reader.onload = function() {
+            resolve(reader.result);
         };
         reader.onerror = function() {
             reject(new Error('Không thể đọc file ảnh')); 
@@ -2177,7 +2156,7 @@ async function handleAddProduct() {
     loadAdminProducts();
     if (currentUser) showRecommendations();
 
-    showNotification('Đã thêm sản phẩm mới và lưu ảnh vào thư mục uploads!', 'success');
+    showNotification('Đã thêm sản phẩm mới và lưu ảnh trong trình duyệt!', 'success');
     closeAddProductModal();
 }
 

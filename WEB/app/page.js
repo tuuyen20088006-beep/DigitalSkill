@@ -849,7 +849,7 @@ export default function HomePage() {
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
-      <Script src="/script.js" strategy="afterInteractive" />
+      <Script src="./script.js" strategy="afterInteractive" />
     </>
   );
 }
