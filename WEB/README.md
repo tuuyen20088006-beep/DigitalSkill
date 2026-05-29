@@ -33,6 +33,34 @@ Logic: JavaScript (Vanilla JS) tích hợp qua cơ chế **dangerouslySetInnerHT
 
 ---
 
+## API sản phẩm
+Dự án có API mô phỏng bằng **Next.js Route Handlers** để Front-end gọi dữ liệu JSON.
+
+| Method | Endpoint | Chức năng |
+| --- | --- | --- |
+| GET | `/api/products/` | Lấy danh sách sản phẩm |
+| POST | `/api/products/` | Thêm sản phẩm mới |
+| GET | `/api/product/?id=1` | Lấy chi tiết sản phẩm theo id |
+| PATCH | `/api/product/?id=1` | Cập nhật sản phẩm |
+| DELETE | `/api/product/?id=1` | Xóa sản phẩm |
+
+Body mẫu khi thêm sản phẩm:
+
+```json
+{
+  "name": "Sản phẩm mới",
+  "price": 99000,
+  "category": "phu-kien",
+  "image": "https://via.placeholder.com/400x300",
+  "stock": 5,
+  "description": "Mô tả sản phẩm"
+}
+```
+
+Lưu ý: API CRUD chạy khi dùng `npm run dev` hoặc deploy lên môi trường có Next.js server. GitHub Pages là static hosting, nên bản deploy tĩnh chủ yếu dùng dữ liệu đã build sẵn và localStorage.
+
+---
+
 ## 📂 Cấu trúc thư mục
 `/app`: Chứa các Route chính của ứng dụng (layout, page, head).
 

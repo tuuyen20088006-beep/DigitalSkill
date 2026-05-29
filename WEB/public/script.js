@@ -1,5 +1,5 @@
 // Product Data - Hình ảnh từ Unsplash (phù hợp với tên sản phẩm)
-const products = [
+let products = [
     // Nồi & Chảo
     { id: 1, name: "Bộ Nồi Inox 5 Món Cao Cấp", price: 1500000, oldPrice: 2000000, category: "noi-chao", badge: "sale", rating: 5, reviews: 128, image: "https://down-vn.img.susercontent.com/file/vn-11134207-820l4-mg35hqdiai2z57", stock: 10, description: "Bộ nồi inox 5 món cao cấp, chất liệu inox 304 an toàn cho sức khỏe. Đáy từ 3 lớp dẫn nhiệt đều, tiết kiệm năng lượng. Phù hợp mọi loại bếp." },
     { id: 2, name: "Chảo Chống Dính GreenCook ", price: 450000, category: "noi-chao", badge: "new", rating: 4.5, reviews: 89, image: "https://product.hstatic.net/200000061070/product/gcp06-28ih-1_84c03bff386b47df83cec4993e3a0646_master.jpg", stock: 15, description: "Chảo chống dính ceramic cao cấp, lớp phủ ceramic an toàn không chứa PFOA. Tay cầm cách nhiệt, thiết kế hiện đại." },
@@ -114,7 +114,7 @@ function onReady(callback) {
 }
 
 // Render products
-function renderProducts(productsToRender) {
+function renderProducts(productsToRender = products) {
     const grid = document.getElementById('product-grid');
     
     if (productsToRender.length === 0) {
@@ -1171,6 +1171,11 @@ function initializeAdminUser() {
 }
 
 onReady(() => {
+    initializeApp();
+});
+
+async function initializeApp() {
+    await loadProductsFromApi();
     loadSavedProducts();
     loadSavedProductImages();
     initializeAdminUser();
@@ -1178,7 +1183,44 @@ onReady(() => {
     updateCart();
     checkAuth();
     renderTestimonials();
-});
+}
+
+async function loadProductsFromApi() {
+    try {
+        const response = await fetch('api/products', {
+            headers: { Accept: 'application/json' },
+        });
+
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+
+        const result = await response.json();
+        if (result.success && Array.isArray(result.data)) {
+            products = result.data;
+        }
+    } catch (error) {
+        console.warn('Không thể tải sản phẩm từ API, dùng dữ liệu dự phòng.', error);
+    }
+}
+
+async function requestProductApi(url, options = {}) {
+    const response = await fetch(url, {
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            ...(options.headers || {})
+        },
+        ...options
+    });
+
+    const result = await response.json().catch(() => null);
+    if (!response.ok || !result?.success) {
+        throw new Error(result?.message || 'API request failed');
+    }
+
+    return result.data;
+}
 
 
 // ==================== ORDER HISTORY SYSTEM ====================
@@ -1467,7 +1509,7 @@ function loadAdminProducts() {
 }
 
 // Delete product function
-function deleteProduct(productId) {
+async function deleteProduct(productId) {
     const product = products.find(p => p.id === productId);
     if (!product) {
         showNotification('Không tìm thấy sản phẩm!', 'error');
@@ -1476,6 +1518,14 @@ function deleteProduct(productId) {
 
     if (!confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${product.name}"?\n\nHành động này không thể hoàn tác!`)) {
         return;
+    }
+
+    try {
+        await requestProductApi(`api/product?id=${productId}`, {
+            method: 'DELETE'
+        });
+    } catch (error) {
+        console.warn('Không thể xóa qua API, xóa ở dữ liệu trình duyệt.', error);
     }
 
     // Remove from products array
@@ -1996,7 +2046,7 @@ onReady(function() {
 });
 
 // Save product image
-function saveProductImage() {
+async function saveProductImage() {
     if (!editingProductId) return;
     
     const newUrl = document.getElementById('new-image-url').value.trim();
@@ -2009,6 +2059,16 @@ function saveProductImage() {
     // Find and update product
     const product = products.find(p => p.id === editingProductId);
     if (product) {
+        try {
+            const updatedProduct = await requestProductApi(`api/product?id=${editingProductId}`, {
+                method: 'PATCH',
+                body: JSON.stringify({ image: newUrl })
+            });
+            Object.assign(product, updatedProduct);
+        } catch (error) {
+            console.warn('Không thể cập nhật qua API, cập nhật ở dữ liệu trình duyệt.', error);
+        }
+
         product.image = newUrl;
         
         // Save to localStorage for persistence
@@ -2117,7 +2177,7 @@ async function handleAddProduct() {
         return;
     }
 
-    const newProduct = {
+    let newProduct = {
         id: Date.now(),
         name,
         price,
@@ -2132,7 +2192,21 @@ async function handleAddProduct() {
         isCustom: true
     };
 
-    products.push(newProduct);
+    try {
+        newProduct = await requestProductApi('api/products', {
+            method: 'POST',
+            body: JSON.stringify(newProduct)
+        });
+    } catch (error) {
+        console.warn('Không thể thêm qua API, thêm ở dữ liệu trình duyệt.', error);
+    }
+
+    const existingIndex = products.findIndex(p => p.id === newProduct.id);
+    if (existingIndex === -1) {
+        products.push(newProduct);
+    } else {
+        products[existingIndex] = newProduct;
+    }
     saveCustomProducts();
     saveProductImages();
 
@@ -2156,7 +2230,7 @@ async function handleAddProduct() {
     loadAdminProducts();
     if (currentUser) showRecommendations();
 
-    showNotification('Đã thêm sản phẩm mới và lưu ảnh trong trình duyệt!', 'success');
+    showNotification('Đã thêm sản phẩm mới!', 'success');
     closeAddProductModal();
 }
 
