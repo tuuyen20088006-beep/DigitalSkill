@@ -104,6 +104,18 @@ function getCategoryName(category) {
     return categories[category] || category;
 }
 
+function getProductFallbackImage(productIdOrName) {
+    const product = products.find(p => p.id === Number(productIdOrName));
+    const name = product ? product.name : String(productIdOrName || 'KitchenPro');
+    const label = encodeURIComponent(name.slice(0, 28));
+    return `data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600' viewBox='0 0 800 600'%3E%3Crect width='800' height='600' fill='%23f7efe7'/%3E%3Ccircle cx='400' cy='250' r='110' fill='%23e67e22' opacity='0.16'/%3E%3Cpath d='M278 286h244v110c0 38-31 69-69 69H347c-38 0-69-31-69-69V286z' fill='%23ffffff' stroke='%23d66f1f' stroke-width='18'/%3E%3Cpath d='M260 286h280M326 248h148' stroke='%23d66f1f' stroke-width='22' stroke-linecap='round'/%3E%3Ctext x='400' y='535' text-anchor='middle' font-family='Arial,sans-serif' font-size='34' font-weight='700' fill='%23633b1f'%3E${label}%3C/text%3E%3C/svg%3E`;
+}
+
+function setProductImageFallback(img, productIdOrName) {
+    img.onerror = null;
+    img.src = getProductFallbackImage(productIdOrName);
+}
+
 // Run callback when DOM is ready, even if script loads after DOMContentLoaded
 function onReady(callback) {
     if (document.readyState === 'loading') {
@@ -134,7 +146,7 @@ function renderProducts(productsToRender = products) {
                 <i class="far fa-heart"></i>
             </div>
             <div class="image-wrapper" onclick="openProductDetail(${product.id})" style="cursor: pointer;">
-                <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/400x300/e67e22/ffffff?text=${encodeURIComponent(product.name.substring(0,15))}'">
+                <img src="${product.image}" alt="${product.name}" onerror="setProductImageFallback(this, ${product.id})">
                 <div class="image-overlay">
                     <i class="fas fa-eye"></i> Xem chi tiết
                 </div>
@@ -367,7 +379,7 @@ function updateCart() {
             <button class="remove-btn" onclick="removeFromCart(${item.id})">
                 <i class="fas fa-times"></i>
             </button>
-            <img src="${item.image}" alt="${item.name}">
+            <img src="${item.image}" alt="${item.name}" onerror="setProductImageFallback(this, ${item.id})">
             <div class="cart-item-info">
                 <h4>${item.name}</h4>
                 <p class="price">${formatPrice(item.price)}</p>
@@ -1005,7 +1017,7 @@ function showRecommendations() {
     grid.innerHTML = recommendations.map(item => `
         <div class="recommendation-card">
             <div class="recommendation-image" onclick="openProductDetail(${item.product.id})" style="cursor: pointer;">
-                <img src="${item.product.image}" alt="${item.product.name}">
+                <img src="${item.product.image}" alt="${item.product.name}" onerror="setProductImageFallback(this, ${item.product.id})">
                 <div class="image-overlay">
                     <i class="fas fa-eye"></i> Xem chi tiết
                 </div>
@@ -1292,7 +1304,7 @@ function renderOrderHistory() {
             <div class="order-items">
                 ${order.items.map(item => `
                     <div class="order-item">
-                        <img src="${item.image}" alt="${item.name}">
+                        <img src="${item.image}" alt="${item.name}" onerror="setProductImageFallback(this, ${item.id})">
                         <div class="order-item-info">
                             <strong>${item.name}</strong>
                             <span>x${item.quantity}</span>
@@ -1488,7 +1500,7 @@ function loadAdminProducts() {
             <tbody>
                 ${products.map(p => `
                     <tr>
-                        <td><img src="${p.image}" alt="${p.name}" class="admin-product-img"></td>
+                        <td><img src="${p.image}" alt="${p.name}" class="admin-product-img" onerror="setProductImageFallback(this, ${p.id})"></td>
                         <td>${p.name}</td>
                         <td>${getCategoryName(p.category)}</td>
                         <td><strong>${formatPrice(p.price)}</strong></td>
@@ -2293,7 +2305,7 @@ function openProductDetail(productId) {
     content.innerHTML = `
         <div class="product-detail-grid">
             <div class="product-detail-image">
-                <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/500x400/e67e22/ffffff?text=${encodeURIComponent(product.name.substring(0,15))}'">
+                <img src="${product.image}" alt="${product.name}" onerror="setProductImageFallback(this, ${product.id})">
                 ${product.badge ? `<span class="badge ${getBadgeClass(product.badge)}">${getBadgeText(product.badge)}</span>` : ''}
                 ${isOutOfStock ? '<span class="badge out-of-stock-badge">Hết hàng</span>' : ''}
             </div>

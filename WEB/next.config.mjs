@@ -1,4 +1,4 @@
-const repoName = '2';
+const repoName = '2ges1lay';
 const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig = {
