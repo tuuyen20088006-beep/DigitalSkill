@@ -7,19 +7,19 @@ const teamMembers = [
     name: 'Nguyễn Ngọc Tú Uyên',
     role: 'Nhà Sáng Lập / Lập Trình Viên Front-end / Quản Lý Dự Án',
     description: 'Người dẫn dắt KitchenPro từ khái niệm đến hiện thực, kết hợp chiến lược sản phẩm sáng suốt với kỹ năng front-end chuyên nghiệp. Đam mê thiết kế giao diện sạch sẽ và trải nghiệm mua sắm tuyệt vời.',
-    image: '2f4281f7eaca6b9432db.jpg',
+    image: 'https://via.placeholder.com/360x360?text=Nguyen+Ngoc+Tu+Uyen',
   },
   {
     name: 'Võ Minh Tâm',
     role: 'Lập Trình Viên Back-end / Kỹ Sư Dữ Liệu',
     description: 'Xây dựng nền tảng ổn định và tối ưu cho trải nghiệm mua sắm. Chuyên về phát triển server, cơ sở dữ liệu và đảm bảo hiệu suất cao cho ứng dụng.',
-    image: '2037af8cc4b145ef1ca0.jpg',
+    image: 'https://via.placeholder.com/360x360?text=Vo+Minh+Tam',
   },
   {
     name: 'Nguyễn Hoàng Phúc',
     role: 'Thiết Kế UI/UX / Kiểm Thử Chất Lượng',
     description: 'Tạo ra bố cục trực quan và hệ thống nhận diện thương hiệu thân thiện. Đảm bảo mọi tính năng hoạt động mượt mà trên mọi thiết bị và cung cấp trải nghiệm người dùng tối ưu.',
-    image: '1ab3a809c334426a1b25.jpg',
+    image: 'https://via.placeholder.com/360x360?text=Nguyen+Hoang+Phuc',
   },
 ];
 
@@ -67,7 +67,10 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="about-hero-visual">
-            
+            <img
+              src="https://via.placeholder.com/900x600?text=KitchenPro+Team+Banner"
+              alt="KitchenPro team banner placeholder"
+            />
           </div>
         </div>
       </section>
@@ -101,7 +104,10 @@ export default function AboutPage() {
       <section id="meet-founder" className="about-section founder-section">
         <div className="container founder-grid">
           <div className="founder-image-card">
-
+            <img
+              src="https://via.placeholder.com/520x620?text=Founder+Portrait"
+              alt="Founder profile placeholder"
+            />
           </div>
           <div className="founder-copy">
             <span className="section-badge">Gặp Gỡ Nhà Sáng Lập</span>
@@ -130,7 +136,7 @@ export default function AboutPage() {
             {teamMembers.map((member) => (
               <article key={member.name} className="team-card">
                 <div className="team-avatar">
-                  <img src={`/images/${member.image}`} alt={`${member.name} profile placeholder`} />
+                  <img src={member.image} alt={`${member.name} profile placeholder`} />
                 </div>
                 <h3>{member.name}</h3>
                 <p className="team-role">{member.role}</p>
