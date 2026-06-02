@@ -13,6 +13,7 @@ const pageHtml = `
             <li><a href="#home"><i class="fas fa-home"></i> Trang chủ</a></li>
             <li><a href="#products"><i class="fas fa-shopping-bag"></i> Sản phẩm</a></li>
             <li><a href="#features"><i class="fas fa-star"></i> Ưu điểm</a></li>
+            <li><a href="/about"><i class="fas fa-users"></i> Về Chúng Tôi</a></li>
             <li><a href="#testimonials"><i class="fas fa-comments"></i> Đánh giá</a></li>
             <li><a href="#contact"><i class="fas fa-envelope"></i> Liên hệ</a></li>
         </ul>
