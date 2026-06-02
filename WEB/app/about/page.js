@@ -23,14 +23,6 @@ const teamMembers = [
   },
 ];
 
-const galleryImages = [
-  'https://via.placeholder.com/520x360?text=Meeting',
-  'https://via.placeholder.com/360x520?text=Brainstorm',
-  'https://via.placeholder.com/420x420?text=Development',
-  'https://via.placeholder.com/520x420?text=Presentation',
-  'https://via.placeholder.com/360x360?text=Team+Activity',
-];
-
 const statsData = [
   { label: 'Thành Viên Nhóm', value: 3, suffix: '+' },
   { label: 'Giờ Phát Triển', value: 1200, suffix: '+' },
@@ -155,22 +147,6 @@ export default function AboutPage() {
                   <a href="#" aria-label="Facebook"><i className="fab fa-facebook-f"></i></a>
                 </div>
               </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="behind-scenes" className="about-section gallery-section">
-        <div className="container">
-          <div className="section-header left">
-            <span className="section-badge">Đằng Sau Cảnh Quay</span>
-            <h2>Đằng Sau Cảnh Quay</h2>
-          </div>
-          <div className="gallery-grid">
-            {galleryImages.map((src, index) => (
-              <div key={index} className={`gallery-item gallery-item-${index + 1}`}>
-                <img src={src} alt={`Behind the scenes ${index + 1}`} />
-              </div>
             ))}
           </div>
         </div>
