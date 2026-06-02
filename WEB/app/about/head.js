@@ -1,4 +1,4 @@
 export const metadata = {
-  title: 'KitchenPro - About Us',
-  description: 'Learn about the founders and development team behind KitchenPro.',
+  title: 'KitchenPro - Về Chúng Tôi',
+  description: 'Tìm hiểu về nhà sáng lập và nhóm phát triển đứng sau KitchenPro từ Trường Đại Học Lạc Hồng.',
 };

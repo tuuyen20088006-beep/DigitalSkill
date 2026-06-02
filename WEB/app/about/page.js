@@ -4,40 +4,22 @@ import { useEffect, useState } from 'react';
 
 const teamMembers = [
   {
-    name: 'Mai An',
-    role: 'Front-end Developer',
-    description: 'Thiết kế trải nghiệm người dùng và chuyển ý tưởng thành giao diện hiện đại.',
-    image: 'https://via.placeholder.com/360x360?text=Team+Member+1',
+    name: 'Nguyễn Ngọc Tú Uyên',
+    role: 'Nhà Sáng Lập / Lập Trình Viên Front-end / Quản Lý Dự Án',
+    description: 'Người dẫn dắt KitchenPro từ khái niệm đến hiện thực, kết hợp chiến lược sản phẩm sáng suốt với kỹ năng front-end chuyên nghiệp. Đam mê thiết kế giao diện sạch sẽ và trải nghiệm mua sắm tuyệt vời.',
+    image: 'https://via.placeholder.com/360x360?text=Nguyen+Ngoc+Tu+Uyen',
   },
   {
-    name: 'Linh Trần',
-    role: 'UI/UX Designer',
-    description: 'Tạo ra bố cục trực quan và hệ thống nhận diện thương hiệu thân thiện.',
-    image: 'https://via.placeholder.com/360x360?text=Team+Member+2',
+    name: 'Võ Minh Tâm',
+    role: 'Lập Trình Viên Back-end / Kỹ Sư Dữ Liệu',
+    description: 'Xây dựng nền tảng ổn định và tối ưu cho trải nghiệm mua sắm. Chuyên về phát triển server, cơ sở dữ liệu và đảm bảo hiệu suất cao cho ứng dụng.',
+    image: 'https://via.placeholder.com/360x360?text=Vo+Minh+Tam',
   },
   {
-    name: 'Huy Phạm',
-    role: 'Back-end Developer',
-    description: 'Xây dựng nền tảng ổn định và tối ưu cho trải nghiệm mua sắm.',
-    image: 'https://via.placeholder.com/360x360?text=Team+Member+3',
-  },
-  {
-    name: 'Bảo Ngọc',
-    role: 'Product Manager',
-    description: 'Định hướng sản phẩm và đảm bảo mọi tính năng đều mang lại giá trị cho khách hàng.',
-    image: 'https://via.placeholder.com/360x360?text=Team+Member+4',
-  },
-  {
-    name: 'An Khang',
-    role: 'QA Engineer',
-    description: 'Kiểm tra chất lượng, đảm bảo mọi tính năng hoạt động mượt mà trên mọi thiết bị.',
-    image: 'https://via.placeholder.com/360x360?text=Team+Member+5',
-  },
-  {
-    name: 'Thảo Vy',
-    role: 'Content Strategist',
-    description: 'Xây dựng nội dung thuyết phục và tự nhiên giúp KitchenPro kết nối với khách hàng.',
-    image: 'https://via.placeholder.com/360x360?text=Team+Member+6',
+    name: 'Nguyễn Hoàng Phúc',
+    role: 'Thiết Kế UI/UX / Kiểm Thử Chất Lượng',
+    description: 'Tạo ra bố cục trực quan và hệ thống nhận diện thương hiệu thân thiện. Đảm bảo mọi tính năng hoạt động mượt mà trên mọi thiết bị và cung cấp trải nghiệm người dùng tối ưu.',
+    image: 'https://via.placeholder.com/360x360?text=Nguyen+Hoang+Phuc',
   },
 ];
 
@@ -50,10 +32,10 @@ const galleryImages = [
 ];
 
 const statsData = [
-  { label: 'Team Members', value: 6, suffix: '+' },
-  { label: 'Development Hours', value: 1200, suffix: '+' },
-  { label: 'Completed Features', value: 48, suffix: '+' },
-  { label: 'User Satisfaction', value: 98, suffix: '%' },
+  { label: 'Thành Viên Nhóm', value: 3, suffix: '+' },
+  { label: 'Giờ Phát Triển', value: 1200, suffix: '+' },
+  { label: 'Tính Năng Hoàn Thành', value: 48, suffix: '+' },
+  { label: 'Mức Hài Lòng Người Dùng', value: 98, suffix: '%' },
 ];
 
 export default function AboutPage() {
@@ -82,15 +64,14 @@ export default function AboutPage() {
       <section className="about-hero">
         <div className="container about-hero-grid">
           <div className="about-hero-copy">
-            <span className="section-badge">About KitchenPro</span>
-            <h1>About KitchenPro</h1>
+            <span className="section-badge">Về KitchenPro</span>
+            <h1>Về Chúng Tôi</h1>
             <p>
-              KitchenPro is a modern kitchen and cookware e-commerce platform created to provide users with a convenient and enjoyable shopping experience.
-              From premium cookware to smart kitchen ideas, we build a boutique destination for home chefs and culinary lovers.
+              KitchenPro là một nền tảng thương mại điện tử bán dụng cụ nhà bếp hiện đại được tạo ra để cung cấp cho người dùng trải nghiệm mua sắm tiện lợi và thú vị. Từ dụng cụ nhà bếp cao cấp đến các ý tưởng nhà bếp thông minh, chúng tôi xây dựng một điểm đến tuyệt vời cho các đầu bếp nhà và những người yêu thích nấu ăn.
             </p>
             <div className="hero-actions">
-              <a href="#our-story" className="btn-primary">Read Our Story</a>
-              <a href="#our-team" className="btn-secondary">Meet the Team</a>
+              <a href="#our-story" className="btn-primary">Đọc Câu Chuyện Của Chúng Tôi</a>
+              <a href="#our-team" className="btn-secondary">Gặp Gỡ Nhóm</a>
             </div>
           </div>
           <div className="about-hero-visual">
@@ -105,24 +86,24 @@ export default function AboutPage() {
       <section id="our-story" className="about-section about-story">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">Our Story</span>
-            <h2>Our Story</h2>
+            <span className="section-badge">Câu Chuyện Của Chúng Tôi</span>
+            <h2>Câu Chuyện Của Chúng Tôi</h2>
           </div>
           <div className="story-grid">
             <article className="story-card">
               <span className="story-step">01</span>
-              <h3>Where it started</h3>
-              <p>KitchenPro began as a shared passion for cookware and a desire to help people create better meals with tools they love.</p>
+              <h3>Khởi Đầu</h3>
+              <p>KitchenPro bắt đầu từ niềm đam mê chung về dụng cụ nhà bếp và mong muốn giúp mọi người nấu những bữa ăn tuyệt vời với những công cụ họ yêu thích.</p>
             </article>
             <article className="story-card">
               <span className="story-step">02</span>
-              <h3>Driven by motivation</h3>
-              <p>We wanted a platform that combined beautiful product discovery, smooth navigation, and thoughtful service for kitchen enthusiasts.</p>
+              <h3>Động Lực Thúc Đẩy</h3>
+              <p>Chúng tôi muốn tạo một nền tảng kết hợp khám phá sản phẩm đẹp mắt, điều hướng mượt mà và dịch vụ chu đáo cho những người yêu thích nhà bếp.</p>
             </article>
             <article className="story-card">
               <span className="story-step">03</span>
-              <h3>Our goal</h3>
-              <p>Our mission is to improve online shopping experiences for kitchen products through modern design, clear presentation, and reliable support.</p>
+              <h3>Mục Tiêu Của Chúng Tôi</h3>
+              <p>Sứ mệnh của chúng tôi là cải thiện trải nghiệm mua sắm trực tuyến cho sản phẩm nhà bếp thông qua thiết kế hiện đại, trình bày rõ ràng và hỗ trợ đáng tin cậy.</p>
             </article>
           </div>
         </div>
@@ -137,13 +118,12 @@ export default function AboutPage() {
             />
           </div>
           <div className="founder-copy">
-            <span className="section-badge">Meet the Founder</span>
-            <h2>Meet the Founder</h2>
-            <h3>Nguyễn Minh</h3>
-            <p className="founder-role">Founder / Front-end Developer / Project Manager</p>
+            <span className="section-badge">Gặp Gỡ Nhà Sáng Lập</span>
+            <h2>Nhà Sáng Lập</h2>
+            <h3>Nguyễn Ngọc Tú Uyên</h3>
+            <p className="founder-role">Nhà Sáng Lập / Lập Trình Viên Front-end / Quản Lý Dự Án</p>
             <p>
-              Nguyễn led KitchenPro from concept to reality, blending thoughtful product strategy with polished front-end craftsmanship.
-              Passionate about clean UI and delightful shopping, the founder brings every design choice back to the customer experience.
+              Nguyễn Ngọc Tú Uyên là sinh viên Công Nghệ Thông Tin tại Trường Đại Học Lạc Hồng, người đã dẫn dắt KitchenPro từ khái niệm đến hiện thực. Kết hợp chiến lược sản phẩm sáng suốt với kỹ năng lập trình front-end chuyên nghiệp, tú Uyên đam mê thiết kế giao diện sạch sẽ và tạo ra trải nghiệm mua sắm tuyệt vời cho người dùng.
             </p>
             <div className="social-links founder-socials">
               <a href="#" aria-label="GitHub"><i className="fab fa-github"></i></a>
@@ -157,8 +137,8 @@ export default function AboutPage() {
       <section id="our-team" className="about-section team-section">
         <div className="container">
           <div className="section-header">
-            <span className="section-badge">Our Team</span>
-            <h2>Our Team</h2>
+            <span className="section-badge">Nhóm Của Chúng Tôi</span>
+            <h2>Nhóm Của Chúng Tôi</h2>
           </div>
           <div className="team-grid">
             {teamMembers.map((member) => (
@@ -183,8 +163,8 @@ export default function AboutPage() {
       <section id="behind-scenes" className="about-section gallery-section">
         <div className="container">
           <div className="section-header left">
-            <span className="section-badge">Behind The Scenes</span>
-            <h2>Behind The Scenes</h2>
+            <span className="section-badge">Đằng Sau Cảnh Quay</span>
+            <h2>Đằng Sau Cảnh Quay</h2>
           </div>
           <div className="gallery-grid">
             {galleryImages.map((src, index) => (
@@ -202,15 +182,15 @@ export default function AboutPage() {
             <div className="icon-circle">
               <i className="fas fa-bullseye"></i>
             </div>
-            <h3>Our Mission</h3>
-            <p>To create a premium digital store for kitchen products that is easy to browse, visually compelling, and trustworthy for every customer.</p>
+            <h3>Sứ Mệnh Của Chúng Tôi</h3>
+            <p>Tạo một cửa hàng kỹ thuật số cao cấp cho các sản phẩm nhà bếp dễ dàng duyệt, hấp dẫn về hình ảnh và đáng tin cậy cho mọi khách hàng.</p>
           </article>
           <article className="vision-card">
             <div className="icon-circle">
               <i className="fas fa-eye"></i>
             </div>
-            <h3>Our Vision</h3>
-            <p>To become the go-to destination for home cooks seeking elegant kitchen tools, great service, and an exceptional shopping journey.</p>
+            <h3>Tầm Nhìn Của Chúng Tôi</h3>
+            <p>Trở thành điểm đến hàng đầu cho những đầu bếp nhà tìm kiếm những công cụ nhà bếp thanh lịch, dịch vụ xuất sắc và một hành trình mua sắm ngoài sức tưởng tượng.</p>
           </article>
         </div>
       </section>
@@ -231,16 +211,16 @@ export default function AboutPage() {
       <section id="contact" className="about-section contact-section">
         <div className="container contact-grid">
           <div className="contact-copy">
-            <span className="section-badge">Contact</span>
-            <h2>Talk to the KitchenPro Team</h2>
-            <p>Have a question or want to collaborate? Our founders and developers are ready to connect and support your kitchen journey.</p>
+            <span className="section-badge">Liên Hệ</span>
+            <h2>Liên Hệ Với Nhóm KitchenPro</h2>
+            <p>Có câu hỏi hoặc muốn hợp tác? Các nhà sáng lập và lập trình viên của chúng tôi sẵn sàng kết nối và hỗ trợ hành trình nhà bếp của bạn.</p>
             <div className="contact-card">
               <div>
                 <h4>Email</h4>
                 <p>hello@kitchenpro.example</p>
               </div>
               <div>
-                <h4>Repository</h4>
+                <h4>Kho Lưu Trữ</h4>
                 <p><a href="#">github.com/kitchenpro/project</a></p>
               </div>
             </div>
@@ -251,20 +231,20 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="contact-card contact-details-card">
-            <h3>Team Information</h3>
-            <p>KitchenPro is built by a dedicated team of product strategists, designers, developers, and quality experts who care about every pixel and purchase.</p>
+            <h3>Thông Tin Nhóm</h3>
+            <p>KitchenPro được xây dựng bởi ba sinh viên Công Nghệ Thông Tin từ Đại Học Lạc Hồng, những người chú ý đến từng chi tiết và mỗi trải nghiệm mua sắm của khách hàng.</p>
             <div className="contact-item">
               <div className="contact-icon"><i className="fas fa-check"></i></div>
               <div>
-                <h4>Fast response</h4>
-                <p>Get support and updates from the team quickly.</p>
+                <h4>Phản Hồi Nhanh</h4>
+                <p>Nhận hỗ trợ và cập nhật từ nhóm một cách nhanh chóng.</p>
               </div>
             </div>
             <div className="contact-item">
               <div className="contact-icon"><i className="fas fa-code"></i></div>
               <div>
-                <h4>Open source friendly</h4>
-                <p>We welcome contributors and improvements on our repository.</p>
+                <h4>Thân Thiện Với Mã Nguồn Mở</h4>
+                <p>Chúng tôi hoan nghênh các đóng góp và cải tiến trên kho lưu trữ của chúng tôi.</p>
               </div>
             </div>
           </div>
